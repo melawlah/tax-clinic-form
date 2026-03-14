@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tax Clinic — Client Screening</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b3557;
+    --navy-dark: #112238;
+    --gold: #d4972a;
+    --gold-light: #f0c060;
+    --gold-bg: #fef8ec;
+    --warm-bg: #fffaf4;
+    --warm-mid: #fdf3e3;
+    --warm-border: #e8d9c4;
+    --text: #2c2c2c;
+    --text-muted: #7a7068;
+    --success: #2d7a4f;
+    --success-bg: #edf7f1;
+    --success-border: #b6dfc8;
+    --danger: #9b2626;
+    --danger-bg: #fdf1f1;
+    --danger-border: #f0b8b8;
+    --white: #ffffff;
+    --radius: 16px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    font-family: 'Nunito', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    background: var(--navy-dark);
+  }
+
+  /* ── FULL VIEWPORT APP SHELL ── */
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--warm-bg);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy);
+    padding: 14px 20px 12px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 90px; height: 90px;
+    background: var(--gold);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  .clinic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(212,151,42,0.18);
+    border: 1px solid rgba(212,151,42,0.3);
+    color: var(--gold-light);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+  }
+  .header-title {
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: var(--navy-dark);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .progress-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .progress-text {
+    color: rgba(255,255,255,0.45);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* ── SLIDE CONTAINER ── */
+  .slides {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── INDIVIDUAL SLIDE ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px 24px;
+    background: var(--warm-bg);
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide.active {
+    transform: translateX(0);
+  }
+  .slide.exit-left {
+    transform: translateX(-100%);
+  }
+
+  /* ── SLIDE HEADER ── */
+  .slide-step {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .slide-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .slide-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 24px;
+  }
+
+  /* ── QUESTION ── */
+  .q-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: block;
+    line-height: 1.4;
+  }
+  .q-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: block;
+    line-height: 1.5;
+  }
+  .question { margin-bottom: 20px; }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--white);
+    border: 2px solid var(--warm-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .opt:active { background: var(--warm-mid); }
+  .opt.selected {
+    border-color: var(--navy);
+    background: #eef3fb;
+    color: var(--navy);
+  }
+  .opt input[type="radio"],
+  .opt input[type="checkbox"] {
+    accent-color: var(--navy);
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── CHECKBOX GRID ── */
+  .opt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .opt-grid .opt {
+    font-size: 13px;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  @media (max-width: 360px) { .opt-grid { grid-template-columns: 1fr; } }
+
+  /* ── INPUTS ── */
+  input[type="text"],
+  input[type="date"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 16px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--white);
+    border: 2px solid var(--warm-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--navy); }
+  input.error, select.error { border-color: #e05555; }
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7068' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 44px;
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+  /* ── SUB QUESTION ── */
+  .sub-q {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: var(--warm-mid);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+    display: none;
+  }
+  .sub-q.visible { display: block; }
+  .sub-q .q-label { font-size: 14px; margin-bottom: 8px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--warm-border); margin: 20px 0; opacity: 0.7; }
+
+  /* ── SPACER ── */
+  .spacer { flex: 1; min-height: 16px; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    padding-top: 8px;
+  }
+  .btn {
+    flex: 1;
+    padding: 18px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); opacity: 0.88; }
+  .btn-primary { background: var(--navy); color: var(--white); }
+  .btn-back {
+    background: var(--warm-mid);
+    color: var(--navy);
+    border: 2px solid var(--warm-border);
+    flex: 0 0 auto;
+    padding: 18px 20px;
+    font-size: 20px;
+  }
+
+  /* ── ERROR ── */
+  .err {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--danger);
+    margin-top: 6px;
+    display: none;
+  }
+  .err.visible { display: block; }
+
+  /* ── INELIGIBLE ── */
+  .center-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .big-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  .big-icon.danger { background: var(--danger-bg); border: 2px solid var(--danger-border); }
+  .big-icon.success { background: var(--success-bg); border: 2px solid var(--success-border); }
+  .center-wrap h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .center-wrap p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+  .ref-tag {
+    margin-top: 20px;
+    background: var(--warm-mid);
+    border: 1px solid var(--warm-border);
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  /* ── ELIGIBLE BANNER ── */
+  .eligible-banner {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+  .eligible-tick {
+    width: 44px; height: 44px;
+    background: rgba(212,151,42,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    color: var(--gold-light);
+  }
+  .eligible-banner h2 { font-size: 17px; font-weight: 800; color: var(--white); margin-bottom: 2px; }
+  .eligible-banner p { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+  /* ── SUMMARY CARDS ── */
+  .sum-card {
+    background: var(--white);
+    border: 1.5px solid var(--warm-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .sum-head {
+    background: var(--warm-mid);
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--warm-border);
+  }
+  .sum-row {
+    display: flex;
+    padding: 9px 14px;
+    border-bottom: 1px solid #faf5ee;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .sum-row:last-child { border-bottom: none; }
+  .sum-key { font-size: 12px; color: var(--text-muted); min-width: 120px; flex-shrink: 0; padding-top: 1px; font-weight: 600; }
+  .sum-val { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.4; }
+  .stag {
+    display: inline-block;
+    background: var(--gold-bg);
+    color: #8a6020;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin: 2px 2px 0 0;
+  }
+
+  /* ── BIO INTRO ── */
+  .bio-intro {
+    background: var(--success-bg);
+    border: 1.5px solid var(--success-border);
+    border-radius: var(--radius-xs);
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--success);
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── DESKTOP ── */
+  @media (min-width: 600px) {
+    html, body { background: #ddd6cc; overflow: auto; height: auto; }
+    .app {
+      height: auto;
+      min-height: 100vh;
+      box-shadow: 0 20px 60px rgba(27,53,87,0.2);
+    }
+    .slides { overflow: visible; height: auto; min-height: 500px; }
+    .slide {
+      position: relative;
+      transform: none;
+      display: none;
+      inset: auto;
+      overflow: visible;
+    }
+    .slide.active { display: flex; transform: none; }
+    .slide.exit-left { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="clinic-badge">✦ RCCG PCF Tax Clinic</div>
+    <div class="header-title">Client Screening &amp; Registration</div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-bg"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">Step 1 of 5</div>
+  </div>
+
+  <div class="slides">
+
+    <!-- ══════════════════════════
+         SLIDE 1 — FIRST TIME?
+    ══════════════════════════ -->
+    <div class="slide active" id="s-first-time">
+      <div class="slide-step">Step 1 of 5 · Filing History</div>
+      <div class="slide-title">Are you filing taxes in Canada for the first time?</div>
+      <div class="options">
+        <label class="opt">
+          <input type="radio" name="first_time" value="yes" onchange="handleFirstTime('yes')">
+          <span>Yes, this is my first time</span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="first_time" value="no" onchange="handleFirstTime('no')">
+          <span>No, I have filed before</span>
+        </label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="nextFrom('s-first-time')">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 1b — LANDING DATE (first timers)
+    ══════════════════════════ -->
+    <div class="slide" id="s-landing">
+      <div class="slide-step">Step 1 of 5 · Filing History</div>
+      <div class="slide-title">What is your date of landing in Canada?</div>
+      <div class="slide-desc">This helps us assign you to the right volunteer.</div>
+      <input type="date" id="landing_date">
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 1c — LAST FILED (returning)
+    ══════════════════════════ -->
+    <div class="slide" id="s-last-filed">
+      <div class="slide-step">Step 1 of 5 · Filing History</div>
+      <div class="slide-title">What year did you last file your taxes?</div>
+      <select id="last_filed_year">
+        <option value="">— Select year —</option>
+        <option>2024</option><option>2023</option><option>2022</option>
+        <option>2021</option><option>2020</option><option>Earlier than 2020</option>
+      </select>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-noa', 'fwd', 1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 1d — NOA
+    ══════════════════════════ -->
+    <div class="slide" id="s-noa">
+      <div class="slide-step">Step 1 of 5 · Filing History</div>
+      <div class="slide-title">Do you have your last Notice of Assessment (NOA) or CRA My Account access?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="has_noa" value="yes"><span>Yes</span></label>
+        <label class="opt"><input type="radio" name="has_noa" value="no"><span>No</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-last-filed', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 2 — SPOUSE
+    ══════════════════════════ -->
+    <div class="slide" id="s-spouse">
+      <div class="slide-step">Step 2 of 5 · Family</div>
+      <div class="slide-title">Do you have a spouse or common-law partner who also needs to file?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="has_spouse" value="yes"><span>Yes</span></label>
+        <label class="opt"><input type="radio" name="has_spouse" value="no"><span>No</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goBackFromSpouse()">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-dep', 'fwd', 2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 2b — DEPENDANTS
+    ══════════════════════════ -->
+    <div class="slide" id="s-dep">
+      <div class="slide-step">Step 2 of 5 · Family</div>
+      <div class="slide-title">Do you have any children or other dependants?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="has_dep" value="yes"><span>Yes</span></label>
+        <label class="opt"><input type="radio" name="has_dep" value="no"><span>No</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-spouse', 'back')">←</button>
+        <button class="btn btn-primary" onclick="nextFromDep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 2c — DEP DETAILS
+    ══════════════════════════ -->
+    <div class="slide" id="s-dep-details">
+      <div class="slide-step">Step 2 of 5 · Family</div>
+      <div class="slide-title">Tell us about your dependants</div>
+      <div class="question">
+        <span class="q-label">How many dependants?</span>
+        <input type="number" id="dep_count" min="1" placeholder="e.g. 2">
+      </div>
+      <div class="question">
+        <span class="q-label">What are their ages?</span>
+        <span class="q-hint">Separate with commas — e.g. 4, 9, 14</span>
+        <input type="text" id="dep_ages" placeholder="e.g. 4, 9, 14">
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-dep', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-dtc', 'fwd', 2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 2d — DTC
+    ══════════════════════════ -->
+    <div class="slide" id="s-dtc">
+      <div class="slide-step">Step 2 of 5 · Family</div>
+      <div class="slide-title">Has anyone in your family been approved for the Disability Tax Credit (DTC)?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="has_dtc" value="yes"><span>Yes</span></label>
+        <label class="opt"><input type="radio" name="has_dtc" value="no"><span>No</span></label>
+        <label class="opt"><input type="radio" name="has_dtc" value="not_sure"><span>Not sure</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goBackFromDtc()">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-t4-count', 'fwd', 3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 3 — T4 COUNT
+    ══════════════════════════ -->
+    <div class="slide" id="s-t4-count">
+      <div class="slide-step">Step 3 of 5 · Income</div>
+      <div class="slide-title">How many T4s or income slips do you have this year?</div>
+      <input type="number" id="t4_count" min="1" placeholder="e.g. 1">
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-dtc', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-biz', 'fwd', 3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 3b — BUSINESS INCOME
+    ══════════════════════════ -->
+    <div class="slide" id="s-biz">
+      <div class="slide-step">Step 3 of 5 · Income</div>
+      <div class="slide-title">Did any income come from self-employment, a business, rental, or gig work?</div>
+      <div class="slide-desc">This includes Uber, Skip, DoorDash, Poparide, Uride, or any self-employed work.</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="has_biz" value="yes"><span>Yes, I have this type of income</span></label>
+        <label class="opt"><input type="radio" name="has_biz" value="no"><span>No, I do not</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-t4-count', 'back')">←</button>
+        <button class="btn btn-primary" onclick="checkIncome()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 4 — LIFE CHANGES
+    ══════════════════════════ -->
+    <div class="slide" id="s-life">
+      <div class="slide-step">Step 4 of 5 · Life Changes</div>
+      <div class="slide-title">Has your living situation changed in the last year?</div>
+      <div class="slide-desc">Marital status, address, custody, adoption, or new dependants.</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="life_change" value="yes"><span>Yes, something changed</span></label>
+        <label class="opt"><input type="radio" name="life_change" value="no"><span>No changes</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-biz', 'back')">←</button>
+        <button class="btn btn-primary" onclick="nextFromLife()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 4b — LIFE CHANGE DESC
+    ══════════════════════════ -->
+    <div class="slide" id="s-life-desc">
+      <div class="slide-step">Step 4 of 5 · Life Changes</div>
+      <div class="slide-title">Please briefly describe the change</div>
+      <div class="slide-desc">This is optional but helps your volunteer prepare.</div>
+      <textarea id="life_desc" placeholder="e.g. Got married in June, changed address in September…"></textarea>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-life', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-slips', 'fwd', 4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 4c — SLIPS
+    ══════════════════════════ -->
+    <div class="slide" id="s-slips">
+      <div class="slide-step">Step 4 of 5 · Documents</div>
+      <div class="slide-title">Which income slips do you have today?</div>
+      <div class="slide-desc">Select all that apply.</div>
+      <div class="opt-grid">
+        <label class="opt"><input type="checkbox" name="slips" value="T4"><span>T4 — Employment</span></label>
+        <label class="opt"><input type="checkbox" name="slips" value="T4A"><span>T4A — Pension</span></label>
+        <label class="opt"><input type="checkbox" name="slips" value="T4(OAS)"><span>T4(OAS) — OAS</span></label>
+        <label class="opt"><input type="checkbox" name="slips" value="T5"><span>T5 — Investment</span></label>
+        <label class="opt"><input type="checkbox" name="slips" value="T5007"><span>T5007 — Social</span></label>
+        <label class="opt"><input type="checkbox" name="slips" value="None yet"><span>None yet</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goBackFromSlips()">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-receipts', 'fwd', 4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 4d — RECEIPTS
+    ══════════════════════════ -->
+    <div class="slide" id="s-receipts">
+      <div class="slide-step">Step 4 of 5 · Documents</div>
+      <div class="slide-title">Which receipts or contributions do you have?</div>
+      <div class="slide-desc">Select all that apply.</div>
+      <div class="opt-grid">
+        <label class="opt"><input type="checkbox" name="receipts" value="Child care"><span>Child care</span></label>
+        <label class="opt"><input type="checkbox" name="receipts" value="Medical"><span>Medical</span></label>
+        <label class="opt"><input type="checkbox" name="receipts" value="RRSP/FHSA"><span>RRSP / FHSA</span></label>
+        <label class="opt"><input type="checkbox" name="receipts" value="Donations"><span>Donations</span></label>
+        <label class="opt"><input type="checkbox" name="receipts" value="Tuition"><span>Tuition</span></label>
+        <label class="opt"><input type="checkbox" name="receipts" value="None"><span>None</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-slips', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-sin', 'fwd', 4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 4e — SIN SLIP
+    ══════════════════════════ -->
+    <div class="slide" id="s-sin">
+      <div class="slide-step">Step 4 of 5 · Documents</div>
+      <div class="slide-title">Do you have your SIN registration slip?</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="sin_slip" value="Yes"><span>Yes</span></label>
+        <label class="opt"><input type="radio" name="sin_slip" value="No"><span>No</span></label>
+        <label class="opt"><input type="radio" name="sin_slip" value="Not sure"><span>Not sure</span></label>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-receipts', 'back')">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-summary', 'fwd', 4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SUMMARY — SHOW VOLUNTEER
+    ══════════════════════════ -->
+    <div class="slide" id="s-summary">
+      <div class="eligible-banner">
+        <div class="eligible-tick">✓</div>
+        <div>
+          <h2>You're Eligible!</h2>
+          <p>Please show this screen to your volunteer</p>
+        </div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-head">Filing History</div>
+        <div class="sum-row"><div class="sum-key">First-time filer</div><div class="sum-val" id="sum-first-time">—</div></div>
+        <div class="sum-row" id="sum-row-landing" style="display:none"><div class="sum-key">Date of landing</div><div class="sum-val" id="sum-landing">—</div></div>
+        <div class="sum-row" id="sum-row-filed" style="display:none"><div class="sum-key">Last filed</div><div class="sum-val" id="sum-filed">—</div></div>
+        <div class="sum-row" id="sum-row-noa" style="display:none"><div class="sum-key">NOA / CRA access</div><div class="sum-val" id="sum-noa">—</div></div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-head">Family &amp; Dependants</div>
+        <div class="sum-row"><div class="sum-key">Spouse filing</div><div class="sum-val" id="sum-spouse">—</div></div>
+        <div class="sum-row"><div class="sum-key">Dependants</div><div class="sum-val" id="sum-dep">—</div></div>
+        <div class="sum-row"><div class="sum-key">DTC approved</div><div class="sum-val" id="sum-dtc">—</div></div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-head">Income &amp; Life Changes</div>
+        <div class="sum-row"><div class="sum-key">Number of slips</div><div class="sum-val" id="sum-t4s">—</div></div>
+        <div class="sum-row"><div class="sum-key">Life changes</div><div class="sum-val" id="sum-life">—</div></div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-head">Documents &amp; Receipts</div>
+        <div class="sum-row"><div class="sum-key">Income slips</div><div class="sum-val" id="sum-slips">—</div></div>
+        <div class="sum-row"><div class="sum-key">Receipts</div><div class="sum-val" id="sum-receipts">—</div></div>
+        <div class="sum-row"><div class="sum-key">SIN slip</div><div class="sum-val" id="sum-sin">—</div></div>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="slideTo('s-bio', 'fwd', 5)">Complete Registration →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SLIDE 5 — BIO
+    ══════════════════════════ -->
+    <div class="slide" id="s-bio">
+      <div class="slide-step">Step 5 of 5 · Your Details</div>
+      <div class="slide-title">Almost done!</div>
+      <div class="bio-intro">✓ You are eligible — please fill in your details below.</div>
+      <div class="question">
+        <span class="q-label">Full name</span>
+        <input type="text" id="bio_name" placeholder="As on your government ID">
+        <div class="err" id="err-name">Please enter your full name.</div>
+      </div>
+      <div class="question">
+        <span class="q-label">Phone number</span>
+        <input type="tel" id="bio_phone" placeholder="e.g. 506-555-0123">
+        <div class="err" id="err-phone">Please enter a phone number.</div>
+      </div>
+      <div class="question">
+        <span class="q-label">Email address</span>
+        <input type="email" id="bio_email" placeholder="e.g. yourname@email.com">
+        <div class="err" id="err-email">Please enter a valid email.</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-summary', 'back')">←</button>
+        <button class="btn btn-primary" id="submitBtn" onclick="submitBio()">Submit ✓</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         INELIGIBLE
+    ══════════════════════════ -->
+    <div class="slide" id="s-ineligible">
+      <div class="center-wrap">
+        <div class="big-icon danger">✕</div>
+        <h2 style="color:var(--danger)">We're Sorry</h2>
+        <p>Our clinic cannot assist with returns that include business, rental, or self-employment income — including Uber, Skip, DoorDash, Poparide, or Uride.<br><br>Please consult a paid tax preparer. Thank you for visiting us today.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SUCCESS
+    ══════════════════════════ -->
+    <div class="slide" id="s-success">
+      <div class="center-wrap">
+        <div class="big-icon success">✓</div>
+        <h2 style="color:var(--success)">You're All Set!</h2>
+        <p>Your registration has been received. Please let your volunteer know you have completed the form.</p>
+        <div class="ref-tag" id="ref-number">—</div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div><!-- /app -->
+
+<script>
+  // ── Track current and history for back navigation ──
+  let currentSlide = 's-first-time';
+  let history = [];
+  let firstTimeFiler = null;
+  let hasDependants = false;
+  let lifeChanged = false;
+
+  function slideTo(targetId, dir, step) {
+    const current = document.getElementById(currentSlide);
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    if (dir === 'fwd') {
+      history.push(currentSlide);
+      current.classList.remove('active');
+      current.classList.add('exit-left');
+      target.style.transform = 'translateX(100%)';
+      target.classList.add('active');
+      setTimeout(() => {
+        target.style.transform = '';
+        current.classList.remove('exit-left');
+      }, 10);
+    } else {
+      current.classList.remove('active');
+      target.style.transform = 'translateX(-100%)';
+      target.classList.add('active');
+      setTimeout(() => {
+        target.style.transform = '';
+      }, 10);
+      history.pop();
+    }
+
+    currentSlide = targetId;
+
+    if (step !== undefined && step > 0) {
+      document.getElementById('progressFill').style.width = ((step / 5) * 100) + '%';
+      document.getElementById('progressText').textContent = 'Step ' + step + ' of 5';
+    } else if (targetId === 's-ineligible') {
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('progressText').textContent = '';
+    }
+
+    if (targetId === 's-summary') buildSummary();
+    window.scrollTo(0, 0);
+  }
+
+  function handleFirstTime(val) {
+    firstTimeFiler = val;
+  }
+
+  function nextFrom(from) {
+    const v = document.querySelector('input[name="first_time"]:checked');
+    if (!v) { alert('Please select an option.'); return; }
+    if (v.value === 'yes') {
+      slideTo('s-landing', 'fwd', 1);
+    } else {
+      slideTo('s-last-filed', 'fwd', 1);
+    }
+  }
+
+  function goBackFromSpouse() {
+    const v = document.querySelector('input[name="first_time"]:checked');
+    if (v && v.value === 'yes') slideTo('s-landing', 'back');
+    else slideTo('s-noa', 'back');
+  }
+
+  function nextFromDep() {
+    const v = document.querySelector('input[name="has_dep"]:checked');
+    if (!v) { alert('Please select an option.'); return; }
+    hasDependants = v.value === 'yes';
+    if (hasDependants) slideTo('s-dep-details', 'fwd', 2);
+    else slideTo('s-dtc', 'fwd', 2);
+  }
+
+  function goBackFromDtc() {
+    if (hasDependants) slideTo('s-dep-details', 'back');
+    else slideTo('s-dep', 'back');
+  }
+
+  function checkIncome() {
+    const v = document.querySelector('input[name="has_biz"]:checked');
+    if (!v) { alert('Please select an option.'); return; }
+    if (v.value === 'yes') slideTo('s-ineligible', 'fwd', 0);
+    else slideTo('s-life', 'fwd', 4);
+  }
+
+  function nextFromLife() {
+    const v = document.querySelector('input[name="life_change"]:checked');
+    if (!v) { alert('Please select an option.'); return; }
+    lifeChanged = v.value === 'yes';
+    if (lifeChanged) slideTo('s-life-desc', 'fwd', 4);
+    else slideTo('s-slips', 'fwd', 4);
+  }
+
+  function goBackFromSlips() {
+    if (lifeChanged) slideTo('s-life-desc', 'back');
+    else slideTo('s-life', 'back');
+  }
+
+  function r(name) {
+    const el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '—';
+  }
+  function t(id) {
+    const el = document.getElementById(id);
+    return el && el.value.trim() ? el.value.trim() : '—';
+  }
+
+  function buildSummary() {
+    const ft = r('first_time');
+    document.getElementById('sum-first-time').textContent = ft === 'yes' ? 'Yes' : ft === 'no' ? 'No' : '—';
+    if (ft === 'yes') {
+      document.getElementById('sum-row-landing').style.display = 'flex';
+      document.getElementById('sum-landing').innerHTML = t('landing_date') + ' <span class="stag">→ Prior-year volunteer</span>';
+      document.getElementById('sum-row-filed').style.display = 'none';
+      document.getElementById('sum-row-noa').style.display = 'none';
+    } else {
+      document.getElementById('sum-row-filed').style.display = 'flex';
+      document.getElementById('sum-filed').textContent = t('last_filed_year');
+      document.getElementById('sum-row-noa').style.display = 'flex';
+      document.getElementById('sum-noa').textContent = r('has_noa') === 'yes' ? 'Yes' : r('has_noa') === 'no' ? 'No' : '—';
+      document.getElementById('sum-row-landing').style.display = 'none';
+    }
+    document.getElementById('sum-spouse').textContent = r('has_spouse') === 'yes' ? 'Yes' : r('has_spouse') === 'no' ? 'No' : '—';
+    const hd = r('has_dep');
+    document.getElementById('sum-dep').textContent = hd === 'yes' ? (t('dep_count') + ' dependant(s), ages: ' + t('dep_ages')) : hd === 'no' ? 'None' : '—';
+    const dtcMap = { yes: 'Yes', no: 'No', not_sure: 'Not sure' };
+    document.getElementById('sum-dtc').textContent = dtcMap[r('has_dtc')] || '—';
+    document.getElementById('sum-t4s').textContent = t('t4_count') !== '—' ? t('t4_count') + ' slip(s)' : '—';
+    const lc = r('life_change');
+    document.getElementById('sum-life').textContent = lc === 'yes' ? ('Yes' + (t('life_desc') !== '—' ? ': ' + t('life_desc') : '')) : lc === 'no' ? 'No changes' : '—';
+    const slips = [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value);
+    document.getElementById('sum-slips').textContent = slips.length ? slips.join(', ') : 'None selected';
+    const receipts = [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value);
+    document.getElementById('sum-receipts').textContent = receipts.length ? receipts.join(', ') : 'None selected';
+    document.getElementById('sum-sin').textContent = r('sin_slip') !== '—' ? r('sin_slip') : '—';
+  }
+
+  function submitBio() {
+    const name = document.getElementById('bio_name').value.trim();
+    const phone = document.getElementById('bio_phone').value.trim();
+    const email = document.getElementById('bio_email').value.trim();
+    let valid = true;
+
+    document.getElementById('err-name').classList.toggle('visible', !name);
+    document.getElementById('bio_name').classList.toggle('error', !name);
+    if (!name) valid = false;
+
+    document.getElementById('err-phone').classList.toggle('visible', !phone);
+    document.getElementById('bio_phone').classList.toggle('error', !phone);
+    if (!phone) valid = false;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    document.getElementById('err-email').classList.toggle('visible', !emailOk);
+    document.getElementById('bio_email').classList.toggle('error', !emailOk);
+    if (!emailOk) valid = false;
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    const payload = {
+      name, phone, email,
+      first_time: r('first_time'),
+      landing_date: t('landing_date'),
+      last_filed_year: t('last_filed_year'),
+      has_noa: r('has_noa'),
+      has_spouse: r('has_spouse'),
+      has_dependants: r('has_dep'),
+      dep_count: t('dep_count'),
+      dep_ages: t('dep_ages'),
+      has_dtc: r('has_dtc'),
+      t4_count: t('t4_count'),
+      life_change: r('life_change'),
+      life_change_desc: t('life_desc'),
+      slips: [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
+      receipts: [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value).join(', ') || 'None',
+      sin_slip: r('sin_slip'),
+      timestamp: new Date().toISOString()
+    };
+
+    // ⬇⬇⬇ PASTE YOUR APPS SCRIPT WEB APP URL HERE ⬇⬇⬇
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    // no-cors is required when calling Apps Script from an external domain
+    // We can't read the response body but if fetch doesn't throw, it worked
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      document.getElementById('ref-number').textContent = 'Ref: TC-' + Date.now().toString().slice(-5);
+      slideTo('s-success', 'fwd', 5);
+    })
+    .catch(() => {
+      btn.textContent = 'Submit ✓';
+      btn.disabled = false;
+      alert('Could not connect. Please inform your volunteer to record your details manually.');
+    });
+  }
+
+  // Highlight selected options
+  document.addEventListener('change', function(e) {
+    if (e.target.type === 'radio') {
+      document.querySelectorAll('input[name="' + e.target.name + '"]').forEach(r => {
+        r.closest('.opt').classList.toggle('selected', r.checked);
+      });
+    }
+    if (e.target.type === 'checkbox') {
+      e.target.closest('.opt').classList.toggle('selected', e.target.checked);
+    }
+  });
+</script>
+</body>
+</html>
