@@ -3,120 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Tax Clinic — Client Screening</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>RCCG PCF Tax Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #1b3557;
-    --navy-dark: #112238;
-    --gold: #d4972a;
-    --gold-light: #f0c060;
-    --gold-bg: #fef8ec;
-    --warm-bg: #fffaf4;
-    --warm-mid: #fdf3e3;
-    --warm-border: #e8d9c4;
-    --text: #2c2c2c;
-    --text-muted: #7a7068;
-    --success: #2d7a4f;
-    --success-bg: #edf7f1;
-    --success-border: #b6dfc8;
-    --danger: #9b2626;
-    --danger-bg: #fdf1f1;
-    --danger-border: #f0b8b8;
-    --white: #ffffff;
-    --radius: 16px;
-    --radius-sm: 12px;
-    --radius-xs: 8px;
+    --navy:        #0f2744;
+    --navy-mid:    #1a3a5c;
+    --navy-light:  #2a5298;
+    --cream:       #fffaf4;
+    --cream-mid:   #fdf3e3;
+    --cream-dark:  #f0e8d8;
+    --gold:        #d4972a;
+    --gold-light:  #f0c060;
+    --gold-bg:     #fef8ec;
+    --white:       #ffffff;
+    --text:        #1a2a3a;
+    --text-muted:  #6a6058;
+    --text-light:  #9a9088;
+    --success:     #1a6b3c;
+    --success-bg:  #e8f5ee;
+    --success-mid: #c0ddd0;
+    --danger:      #8b1a1a;
+    --danger-bg:   #fdf0f0;
+    --danger-mid:  #f0b8b8;
+    --border:      #e0d0bc;
+    --radius:      18px;
+    --radius-sm:   12px;
+    --radius-xs:   8px;
+    --ease:        cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   html, body {
     font-family: 'Nunito', sans-serif;
+    background: var(--navy);
     height: 100%;
     overflow: hidden;
-    background: var(--navy-dark);
+    color: var(--text);
   }
 
-  /* ── FULL VIEWPORT APP SHELL ── */
+  /* ── APP SHELL ── */
   .app {
     display: flex;
     flex-direction: column;
     height: 100vh;
     height: 100dvh;
-    background: var(--warm-bg);
-    max-width: 560px;
+    background: var(--cream);
+    max-width: 480px;
     margin: 0 auto;
+    position: relative;
+    overflow: hidden;
   }
 
   /* ── HEADER ── */
   .header {
     background: var(--navy);
-    padding: 14px 20px 12px;
+    padding: 16px 22px 14px;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
+    z-index: 10;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    background: var(--gold);
+    opacity: 0.08;
+    border-radius: 50%;
   }
   .header::after {
     content: '';
     position: absolute;
-    top: -20px; right: -20px;
-    width: 90px; height: 90px;
-    background: var(--gold);
-    opacity: 0.1;
+    bottom: -30px; left: 30%;
+    width: 100px; height: 100px;
+    background: var(--navy-light);
+    opacity: 0.3;
     border-radius: 50%;
   }
-  .clinic-badge {
-    display: inline-flex;
+  .header-inner { position: relative; z-index: 1; }
+  .clinic-name {
+    display: flex;
     align-items: center;
-    gap: 5px;
-    background: rgba(212,151,42,0.18);
-    border: 1px solid rgba(212,151,42,0.3);
-    color: var(--gold-light);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .clinic-dot {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-weight: 900;
+    color: var(--navy);
+  }
+  .clinic-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 20px;
-    margin-bottom: 5px;
+    color: var(--gold-light);
   }
   .header-title {
     color: var(--white);
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.2;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-left: 36px;
   }
 
-  /* ── PROGRESS BAR ── */
+  /* ── PROGRESS ── */
   .progress-wrap {
-    background: var(--navy-dark);
-    padding: 8px 20px;
+    background: var(--navy-mid);
+    padding: 10px 22px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex-shrink: 0;
   }
   .progress-bg {
     flex: 1;
-    height: 4px;
-    background: rgba(255,255,255,0.12);
-    border-radius: 2px;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
     overflow: hidden;
   }
   .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    border-radius: 2px;
-    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    border-radius: 3px;
+    transition: width 0.5s var(--ease);
     width: 0%;
   }
   .progress-text {
-    color: rgba(255,255,255,0.45);
-    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
-    min-width: 48px;
+    min-width: 52px;
     text-align: right;
   }
 
@@ -127,95 +154,78 @@
     overflow: hidden;
   }
 
-  /* ── INDIVIDUAL SLIDE ── */
+  /* ── SLIDES ── */
   .slide {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
-    padding: 28px 24px 24px;
-    background: var(--warm-bg);
-    transform: translateX(100%);
-    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    padding: 28px 22px 22px;
+    background: var(--cream);
+    transform: translateX(110%);
+    transition: transform 0.42s var(--ease);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    will-change: transform;
   }
-  .slide.active {
-    transform: translateX(0);
-  }
-  .slide.exit-left {
-    transform: translateX(-100%);
-  }
+  .slide.active  { transform: translateX(0); }
+  .slide.exit-left { transform: translateX(-110%); }
+  .slide.no-anim { transition: none; }
 
-  /* ── SLIDE HEADER ── */
+  /* ── SLIDE CONTENT ── */
   .slide-step {
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 800;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .slide-title {
-    font-size: 24px;
-    font-weight: 800;
+    font-size: 22px;
+    font-weight: 900;
     color: var(--navy);
     line-height: 1.2;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .slide-desc {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 24px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+    font-weight: 500;
   }
-
-  /* ── QUESTION ── */
-  .q-label {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 6px;
-    display: block;
-    line-height: 1.4;
-  }
-  .q-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    display: block;
-    line-height: 1.5;
-  }
-  .question { margin-bottom: 20px; }
 
   /* ── OPTIONS ── */
-  .options { display: flex; flex-direction: column; gap: 10px; }
+  .options { display: flex; flex-direction: column; gap: 12px; }
   .opt {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 16px 18px;
+    padding: 18px 20px;
     background: var(--white);
-    border: 2px solid var(--warm-border);
+    border: 2.5px solid var(--border);
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    font-size: 16px;
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    font-size: 17px;
     font-weight: 600;
     color: var(--text);
     -webkit-user-select: none;
     user-select: none;
+    min-height: 60px;
   }
-  .opt:active { background: var(--warm-mid); }
+  .opt:active { transform: scale(0.98); background: var(--cream-mid); }
   .opt.selected {
     border-color: var(--navy);
-    background: #eef3fb;
+    background: #e8f0fb;
     color: var(--navy);
+    font-weight: 800;
   }
   .opt input[type="radio"],
   .opt input[type="checkbox"] {
     accent-color: var(--navy);
-    width: 20px; height: 20px;
+    width: 22px; height: 22px;
     flex-shrink: 0;
   }
 
@@ -223,14 +233,15 @@
   .opt-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
   }
   .opt-grid .opt {
-    font-size: 13px;
-    padding: 12px 14px;
-    gap: 8px;
+    font-size: 14px;
+    padding: 14px 14px;
+    min-height: 52px;
+    gap: 10px;
   }
-  @media (max-width: 360px) { .opt-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 340px) { .opt-grid { grid-template-columns: 1fr; } }
 
   /* ── INPUTS ── */
   input[type="text"],
@@ -241,87 +252,190 @@
   select,
   textarea {
     width: 100%;
-    padding: 16px 18px;
+    padding: 18px 20px;
     font-family: 'Nunito', sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--text);
     background: var(--white);
-    border: 2px solid var(--warm-border);
+    border: 2.5px solid var(--border);
     border-radius: var(--radius-sm);
     outline: none;
-    transition: border-color 0.15s;
+    transition: border-color 0.18s;
     -webkit-appearance: none;
   }
   input:focus, select:focus, textarea:focus { border-color: var(--navy); }
   input.error, select.error { border-color: #e05555; }
   select {
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7068' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%235a7a9a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 44px;
+    background-position: right 18px center;
+    padding-right: 48px;
   }
-  textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  textarea { resize: none; min-height: 100px; line-height: 1.5; }
 
-  /* ── SUB QUESTION ── */
-  .sub-q {
-    margin-top: 12px;
-    padding: 14px 16px;
-    background: var(--warm-mid);
-    border-left: 3px solid var(--gold);
-    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
-    display: none;
-  }
-  .sub-q.visible { display: block; }
-  .sub-q .q-label { font-size: 14px; margin-bottom: 8px; }
-
-  /* ── DIVIDER ── */
-  .divider { height: 1px; background: var(--warm-border); margin: 20px 0; opacity: 0.7; }
-
-  /* ── SPACER ── */
-  .spacer { flex: 1; min-height: 16px; }
-
-  /* ── BUTTONS ── */
-  .btn-row {
-    display: flex;
-    gap: 10px;
-    flex-shrink: 0;
-    padding-top: 8px;
-  }
-  .btn {
-    flex: 1;
-    padding: 18px 20px;
-    font-family: 'Nunito', sans-serif;
+  /* ── Q LABEL ── */
+  .q-label {
     font-size: 17px;
     font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: block;
+    line-height: 1.4;
+  }
+  .q-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: block;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+  .question { margin-bottom: 20px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1.5px; background: var(--cream-dark); margin: 18px 0; border-radius: 1px; }
+
+  /* ── SPACER ── */
+  .spacer { flex: 1; min-height: 20px; }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; padding-top: 10px; flex-shrink: 0; }
+  .btn {
+    flex: 1;
+    padding: 20px 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 900;
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
+    transition: opacity 0.15s, transform 0.12s;
+    letter-spacing: 0.01em;
   }
   .btn:active { transform: scale(0.97); opacity: 0.88; }
   .btn-primary { background: var(--navy); color: var(--white); }
   .btn-back {
-    background: var(--warm-mid);
+    background: var(--white);
     color: var(--navy);
-    border: 2px solid var(--warm-border);
+    border: 2.5px solid var(--border);
     flex: 0 0 auto;
-    padding: 18px 20px;
-    font-size: 20px;
+    padding: 20px 22px;
+    font-size: 22px;
   }
 
   /* ── ERROR ── */
-  .err {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--danger);
-    margin-top: 6px;
-    display: none;
-  }
+  .err { font-size: 13px; font-weight: 700; color: var(--danger); margin-top: 6px; display: none; }
   .err.visible { display: block; }
 
-  /* ── INELIGIBLE ── */
+
+
+  /* ══════════════════════════════════════
+     ELIGIBLE / SUMMARY SLIDE
+  ══════════════════════════════════════ */
+  .eligible-hero {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    border-radius: var(--radius);
+    padding: 28px 22px;
+    text-align: center;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .eligible-hero::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: var(--gold);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  .eligible-checkmark {
+    width: 72px; height: 72px;
+    background: rgba(212,151,42,0.2);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 34px;
+    position: relative;
+    z-index: 1;
+  }
+  .eligible-hero h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .eligible-hero p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── SUMMARY CARDS ── */
+  .sum-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .sum-head {
+    background: var(--cream-mid);
+    padding: 9px 16px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy-mid);
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .sum-row {
+    display: flex;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--cream);
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .sum-row:last-child { border-bottom: none; }
+  .sum-key { font-size: 12px; color: var(--text-muted); min-width: 120px; flex-shrink: 0; font-weight: 600; padding-top: 1px; }
+  .sum-val { font-size: 13px; font-weight: 800; color: var(--navy); line-height: 1.4; }
+  .stag {
+    display: inline-block;
+    background: var(--gold-bg);
+    color: #8a6020;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin: 2px 2px 0 0;
+  }
+
+  /* ── BIO INTRO ── */
+  .bio-intro {
+    background: var(--success-bg);
+    border: 2px solid var(--success-mid);
+    border-radius: var(--radius-xs);
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--success);
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════
+     INELIGIBLE
+  ══════════════════════════════════════ */
   .center-wrap {
     flex: 1;
     display: flex;
@@ -329,123 +443,48 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px 0;
+    padding: 20px 10px;
   }
   .big-icon {
-    width: 80px; height: 80px;
+    width: 90px; height: 90px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 42px;
+    margin-bottom: 22px;
   }
-  .big-icon.danger { background: var(--danger-bg); border: 2px solid var(--danger-border); }
-  .big-icon.success { background: var(--success-bg); border: 2px solid var(--success-border); }
-  .center-wrap h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
-  .center-wrap p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+  .big-icon.danger { background: var(--danger-bg); border: 2.5px solid var(--danger-mid); }
+  .big-icon.success { background: var(--success-bg); border: 2.5px solid var(--success-mid); }
+  .center-wrap h2 { font-size: 26px; font-weight: 900; margin-bottom: 14px; }
+  .center-wrap p { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 300px; font-weight: 500; }
   .ref-tag {
-    margin-top: 20px;
-    background: var(--warm-mid);
-    border: 1px solid var(--warm-border);
-    border-radius: 20px;
-    padding: 8px 20px;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-muted);
-  }
-
-  /* ── ELIGIBLE BANNER ── */
-  .eligible-banner {
-    background: var(--navy);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 16px;
-    flex-shrink: 0;
-  }
-  .eligible-tick {
-    width: 44px; height: 44px;
-    background: rgba(212,151,42,0.2);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-    color: var(--gold-light);
-  }
-  .eligible-banner h2 { font-size: 17px; font-weight: 800; color: var(--white); margin-bottom: 2px; }
-  .eligible-banner p { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; }
-
-  /* ── SUMMARY CARDS ── */
-  .sum-card {
+    margin-top: 22px;
     background: var(--white);
-    border: 1.5px solid var(--warm-border);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    margin-bottom: 12px;
-    flex-shrink: 0;
-  }
-  .sum-head {
-    background: var(--warm-mid);
-    padding: 8px 14px;
-    font-size: 10px;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 10px 24px;
+    font-size: 15px;
     font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: var(--text-muted);
-    border-bottom: 1px solid var(--warm-border);
-  }
-  .sum-row {
-    display: flex;
-    padding: 9px 14px;
-    border-bottom: 1px solid #faf5ee;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  .sum-row:last-child { border-bottom: none; }
-  .sum-key { font-size: 12px; color: var(--text-muted); min-width: 120px; flex-shrink: 0; padding-top: 1px; font-weight: 600; }
-  .sum-val { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.4; }
-  .stag {
-    display: inline-block;
-    background: var(--gold-bg);
-    color: #8a6020;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 10px;
-    margin: 2px 2px 0 0;
-  }
-
-  /* ── BIO INTRO ── */
-  .bio-intro {
-    background: var(--success-bg);
-    border: 1.5px solid var(--success-border);
-    border-radius: var(--radius-xs);
-    padding: 12px 14px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--success);
-    margin-bottom: 20px;
-    flex-shrink: 0;
   }
 
   /* ── DESKTOP ── */
-  @media (min-width: 600px) {
-    html, body { background: #ddd6cc; overflow: auto; height: auto; }
+  @media (min-width: 520px) {
+    html, body { background: #e8e0d0; overflow: auto; height: auto; }
     .app {
       height: auto;
       min-height: 100vh;
-      box-shadow: 0 20px 60px rgba(27,53,87,0.2);
+      box-shadow: 0 24px 80px rgba(10,20,40,0.5);
     }
-    .slides { overflow: visible; height: auto; min-height: 500px; }
+    .slides { overflow: visible; height: auto; min-height: 520px; }
     .slide {
       position: relative;
-      transform: none;
+      transform: none !important;
       display: none;
       inset: auto;
       overflow: visible;
+      transition: none;
     }
-    .slide.active { display: flex; transform: none; }
+    .slide.active { display: flex; }
     .slide.exit-left { display: none; }
   }
 </style>
@@ -455,14 +494,19 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="clinic-badge">✦ RCCG PCF Tax Clinic</div>
-    <div class="header-title">Client Screening &amp; Registration</div>
+    <div class="header-inner">
+      <div class="clinic-name">
+        <div class="clinic-dot">✦</div>
+        <span class="clinic-label">RCCG PCF Tax Clinic</span>
+      </div>
+      <div class="header-title">Client Screening &amp; Registration</div>
+    </div>
   </div>
 
   <!-- PROGRESS -->
   <div class="progress-wrap">
     <div class="progress-bg"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-text" id="progressText">Step 1 of 5</div>
+    <div class="progress-text" id="progressText"></div>
   </div>
 
   <div class="slides">
@@ -475,23 +519,22 @@
       <div class="slide-title">Are you filing taxes in Canada for the first time?</div>
       <div class="options">
         <label class="opt">
-          <input type="radio" name="first_time" value="yes" onchange="handleFirstTime('yes')">
+          <input type="radio" name="first_time" value="yes" onchange="firstTimeFiler='yes'">
           <span>Yes, this is my first time</span>
         </label>
         <label class="opt">
-          <input type="radio" name="first_time" value="no" onchange="handleFirstTime('no')">
+          <input type="radio" name="first_time" value="no" onchange="firstTimeFiler='no'">
           <span>No, I have filed before</span>
         </label>
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="nextFrom('s-first-time')">Continue →</button>
+        <button class="btn btn-primary" onclick="nextFromFirstTime()">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 1b — LANDING DATE (first timers)
-    ══════════════════════════ -->
+
+    <!-- SLIDE 1b — LANDING DATE -->
     <div class="slide" id="s-landing">
       <div class="slide-step">Step 1 of 5 · Filing History</div>
       <div class="slide-title">What is your date of landing in Canada?</div>
@@ -499,14 +542,13 @@
       <input type="date" id="landing_date">
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back')">←</button>
-        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 1)">Continue →</button>
+        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back', 1)">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 2)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 1c — LAST FILED (returning)
-    ══════════════════════════ -->
+
+    <!-- SLIDE 1c — LAST FILED -->
     <div class="slide" id="s-last-filed">
       <div class="slide-step">Step 1 of 5 · Filing History</div>
       <div class="slide-title">What year did you last file your taxes?</div>
@@ -517,14 +559,13 @@
       </select>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-first-time', 'back', 1)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-noa', 'fwd', 1)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 1d — NOA
-    ══════════════════════════ -->
+
+    <!-- SLIDE 1d — NOA -->
     <div class="slide" id="s-noa">
       <div class="slide-step">Step 1 of 5 · Filing History</div>
       <div class="slide-title">Do you have your last Notice of Assessment (NOA) or CRA My Account access?</div>
@@ -534,10 +575,11 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-last-filed', 'back')">←</button>
-        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 1)">Continue →</button>
+        <button class="btn btn-back" onclick="slideTo('s-last-filed', 'back', 1)">←</button>
+        <button class="btn btn-primary" onclick="slideTo('s-spouse', 'fwd', 2)">Continue →</button>
       </div>
     </div>
+
 
     <!-- ══════════════════════════
          SLIDE 2 — SPOUSE
@@ -556,9 +598,8 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 2b — DEPENDANTS
-    ══════════════════════════ -->
+
+    <!-- SLIDE 2b — DEPENDANTS -->
     <div class="slide" id="s-dep">
       <div class="slide-step">Step 2 of 5 · Family</div>
       <div class="slide-title">Do you have any children or other dependants?</div>
@@ -568,14 +609,13 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-spouse', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-spouse', 'back', 2)">←</button>
         <button class="btn btn-primary" onclick="nextFromDep()">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 2c — DEP DETAILS
-    ══════════════════════════ -->
+
+    <!-- SLIDE 2c — DEP DETAILS -->
     <div class="slide" id="s-dep-details">
       <div class="slide-step">Step 2 of 5 · Family</div>
       <div class="slide-title">Tell us about your dependants</div>
@@ -590,14 +630,13 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-dep', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-dep', 'back', 2)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-dtc', 'fwd', 2)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 2d — DTC
-    ══════════════════════════ -->
+
+    <!-- SLIDE 2d — DTC -->
     <div class="slide" id="s-dtc">
       <div class="slide-step">Step 2 of 5 · Family</div>
       <div class="slide-title">Has anyone in your family been approved for the Disability Tax Credit (DTC)?</div>
@@ -613,8 +652,9 @@
       </div>
     </div>
 
+
     <!-- ══════════════════════════
-         SLIDE 3 — T4 COUNT
+         SLIDE 3 — INCOME
     ══════════════════════════ -->
     <div class="slide" id="s-t4-count">
       <div class="slide-step">Step 3 of 5 · Income</div>
@@ -622,14 +662,13 @@
       <input type="number" id="t4_count" min="1" placeholder="e.g. 1">
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-dtc', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-dtc', 'back', 2)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-biz', 'fwd', 3)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 3b — BUSINESS INCOME
-    ══════════════════════════ -->
+
+    <!-- SLIDE 3b — BUSINESS INCOME -->
     <div class="slide" id="s-biz">
       <div class="slide-step">Step 3 of 5 · Income</div>
       <div class="slide-title">Did any income come from self-employment, a business, rental, or gig work?</div>
@@ -640,10 +679,11 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-t4-count', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-t4-count', 'back', 3)">←</button>
         <button class="btn btn-primary" onclick="checkIncome()">Continue →</button>
       </div>
     </div>
+
 
     <!-- ══════════════════════════
          SLIDE 4 — LIFE CHANGES
@@ -658,29 +698,27 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-biz', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-biz', 'back', 3)">←</button>
         <button class="btn btn-primary" onclick="nextFromLife()">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 4b — LIFE CHANGE DESC
-    ══════════════════════════ -->
+
+    <!-- SLIDE 4b — LIFE DESC -->
     <div class="slide" id="s-life-desc">
       <div class="slide-step">Step 4 of 5 · Life Changes</div>
       <div class="slide-title">Please briefly describe the change</div>
-      <div class="slide-desc">This is optional but helps your volunteer prepare.</div>
-      <textarea id="life_desc" placeholder="e.g. Got married in June, changed address in September…"></textarea>
+      <div class="slide-desc">Optional — helps your volunteer prepare.</div>
+      <textarea id="life_desc" placeholder="e.g. Got married in June, changed address…"></textarea>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-life', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-life', 'back', 4)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-slips', 'fwd', 4)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 4c — SLIPS
-    ══════════════════════════ -->
+
+    <!-- SLIDE 4c — SLIPS -->
     <div class="slide" id="s-slips">
       <div class="slide-step">Step 4 of 5 · Documents</div>
       <div class="slide-title">Which income slips do you have today?</div>
@@ -700,9 +738,8 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 4d — RECEIPTS
-    ══════════════════════════ -->
+
+    <!-- SLIDE 4d — RECEIPTS -->
     <div class="slide" id="s-receipts">
       <div class="slide-step">Step 4 of 5 · Documents</div>
       <div class="slide-title">Which receipts or contributions do you have?</div>
@@ -717,14 +754,13 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-slips', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-slips', 'back', 4)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-sin', 'fwd', 4)">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════
-         SLIDE 4e — SIN SLIP
-    ══════════════════════════ -->
+
+    <!-- SLIDE 4e — SIN -->
     <div class="slide" id="s-sin">
       <div class="slide-step">Step 4 of 5 · Documents</div>
       <div class="slide-title">Do you have your SIN registration slip?</div>
@@ -735,21 +771,20 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-receipts', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-receipts', 'back', 4)">←</button>
         <button class="btn btn-primary" onclick="slideTo('s-summary', 'fwd', 4)">Continue →</button>
       </div>
     </div>
 
+
     <!-- ══════════════════════════
-         SUMMARY — SHOW VOLUNTEER
+         SUMMARY
     ══════════════════════════ -->
     <div class="slide" id="s-summary">
-      <div class="eligible-banner">
-        <div class="eligible-tick">✓</div>
-        <div>
-          <h2>You're Eligible!</h2>
-          <p>Please show this screen to your volunteer</p>
-        </div>
+      <div class="eligible-hero">
+        <div class="eligible-checkmark">✓</div>
+        <h2>You're Eligible!</h2>
+        <p>Please show this screen to your volunteer</p>
       </div>
       <div class="sum-card">
         <div class="sum-head">Filing History</div>
@@ -773,13 +808,14 @@
         <div class="sum-head">Documents &amp; Receipts</div>
         <div class="sum-row"><div class="sum-key">Income slips</div><div class="sum-val" id="sum-slips">—</div></div>
         <div class="sum-row"><div class="sum-key">Receipts</div><div class="sum-val" id="sum-receipts">—</div></div>
-        <div class="sum-row"><div class="sum-key">SIN slip</div><div class="sum-val" id="sum-sin">—</div></div>
+        <div class="sum-row"><div class="sum-key">SIN slip</div><div class="sum-val" id="sum-sin-val">—</div></div>
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="slideTo('s-bio', 'fwd', 5)">Complete Registration →</button>
       </div>
     </div>
+
 
     <!-- ══════════════════════════
          SLIDE 5 — BIO
@@ -805,10 +841,11 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-summary', 'back')">←</button>
+        <button class="btn btn-back" onclick="slideTo('s-summary', 'back', 4)">←</button>
         <button class="btn btn-primary" id="submitBtn" onclick="submitBio()">Submit ✓</button>
       </div>
     </div>
+
 
     <!-- ══════════════════════════
          INELIGIBLE
@@ -820,6 +857,7 @@
         <p>Our clinic cannot assist with returns that include business, rental, or self-employment income — including Uber, Skip, DoorDash, Poparide, or Uride.<br><br>Please consult a paid tax preparer. Thank you for visiting us today.</p>
       </div>
     </div>
+
 
     <!-- ══════════════════════════
          SUCCESS
@@ -837,70 +875,66 @@
 </div><!-- /app -->
 
 <script>
-  // ── Track current and history for back navigation ──
   let currentSlide = 's-first-time';
-  let history = [];
   let firstTimeFiler = null;
   let hasDependants = false;
   let lifeChanged = false;
 
   function slideTo(targetId, dir, step) {
+    if (targetId === 's-summary') buildSummary();
+
     const current = document.getElementById(currentSlide);
-    const target = document.getElementById(targetId);
+    const target  = document.getElementById(targetId);
     if (!target) return;
 
     if (dir === 'fwd') {
-      history.push(currentSlide);
       current.classList.remove('active');
       current.classList.add('exit-left');
-      target.style.transform = 'translateX(100%)';
+      target.classList.remove('exit-left');
+      target.style.transform = 'translateX(110%)';
+      // Force reflow
+      target.getBoundingClientRect();
       target.classList.add('active');
-      setTimeout(() => {
-        target.style.transform = '';
-        current.classList.remove('exit-left');
-      }, 10);
+      target.style.transform = '';
+      setTimeout(() => current.classList.remove('exit-left'), 420);
     } else {
       current.classList.remove('active');
-      target.style.transform = 'translateX(-100%)';
+      target.style.transform = 'translateX(-110%)';
       target.classList.add('active');
-      setTimeout(() => {
-        target.style.transform = '';
-      }, 10);
-      history.pop();
+      target.getBoundingClientRect();
+      target.style.transform = '';
+      setTimeout(() => { current.style.transform = ''; }, 420);
     }
 
     currentSlide = targetId;
 
-    if (step !== undefined && step > 0) {
+    // Progress bar
+    if (step > 0) {
       document.getElementById('progressFill').style.width = ((step / 5) * 100) + '%';
       document.getElementById('progressText').textContent = 'Step ' + step + ' of 5';
-    } else if (targetId === 's-ineligible') {
+    } else if (step === 0) {
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('progressText').textContent = '';
+    } else {
       document.getElementById('progressFill').style.width = '0%';
       document.getElementById('progressText').textContent = '';
     }
 
-    if (targetId === 's-summary') buildSummary();
     window.scrollTo(0, 0);
   }
 
-  function handleFirstTime(val) {
-    firstTimeFiler = val;
-  }
-
-  function nextFrom(from) {
+  // ── Navigation helpers ──────────────────────────────────────────
+  function nextFromFirstTime() {
     const v = document.querySelector('input[name="first_time"]:checked');
     if (!v) { alert('Please select an option.'); return; }
-    if (v.value === 'yes') {
-      slideTo('s-landing', 'fwd', 1);
-    } else {
-      slideTo('s-last-filed', 'fwd', 1);
-    }
+    firstTimeFiler = v.value;
+    if (v.value === 'yes') slideTo('s-landing', 'fwd', 1);
+    else slideTo('s-last-filed', 'fwd', 1);
   }
 
   function goBackFromSpouse() {
-    const v = document.querySelector('input[name="first_time"]:checked');
-    if (v && v.value === 'yes') slideTo('s-landing', 'back');
-    else slideTo('s-noa', 'back');
+    if (firstTimeFiler === 'yes') slideTo('s-landing', 'back', 1);
+    else slideTo('s-noa', 'back', 1);
   }
 
   function nextFromDep() {
@@ -912,15 +946,20 @@
   }
 
   function goBackFromDtc() {
-    if (hasDependants) slideTo('s-dep-details', 'back');
-    else slideTo('s-dep', 'back');
+    if (hasDependants) slideTo('s-dep-details', 'back', 2);
+    else slideTo('s-dep', 'back', 2);
   }
 
   function checkIncome() {
     const v = document.querySelector('input[name="has_biz"]:checked');
     if (!v) { alert('Please select an option.'); return; }
-    if (v.value === 'yes') slideTo('s-ineligible', 'fwd', 0);
-    else slideTo('s-life', 'fwd', 4);
+    if (v.value === 'yes') {
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('progressText').textContent = '';
+      slideTo('s-ineligible', 'fwd', -1);
+    } else {
+      slideTo('s-life', 'fwd', 4);
+    }
   }
 
   function nextFromLife() {
@@ -932,10 +971,11 @@
   }
 
   function goBackFromSlips() {
-    if (lifeChanged) slideTo('s-life-desc', 'back');
-    else slideTo('s-life', 'back');
+    if (lifeChanged) slideTo('s-life-desc', 'back', 4);
+    else slideTo('s-life', 'back', 4);
   }
 
+  // ── Helpers ─────────────────────────────────────────────────────
   function r(name) {
     const el = document.querySelector('input[name="' + name + '"]:checked');
     return el ? el.value : '—';
@@ -945,6 +985,7 @@
     return el && el.value.trim() ? el.value.trim() : '—';
   }
 
+  // ── Build summary ────────────────────────────────────────────────
   function buildSummary() {
     const ft = r('first_time');
     document.getElementById('sum-first-time').textContent = ft === 'yes' ? 'Yes' : ft === 'no' ? 'No' : '—';
@@ -972,11 +1013,12 @@
     document.getElementById('sum-slips').textContent = slips.length ? slips.join(', ') : 'None selected';
     const receipts = [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value);
     document.getElementById('sum-receipts').textContent = receipts.length ? receipts.join(', ') : 'None selected';
-    document.getElementById('sum-sin').textContent = r('sin_slip') !== '—' ? r('sin_slip') : '—';
+    document.getElementById('sum-sin-val').textContent = r('sin_slip') !== '—' ? r('sin_slip') : '—';
   }
 
+  // ── Submit bio ───────────────────────────────────────────────────
   function submitBio() {
-    const name = document.getElementById('bio_name').value.trim();
+    const name  = document.getElementById('bio_name').value.trim();
     const phone = document.getElementById('bio_phone').value.trim();
     const email = document.getElementById('bio_email').value.trim();
     let valid = true;
@@ -1001,29 +1043,27 @@
 
     const payload = {
       name, phone, email,
-      first_time: r('first_time'),
-      landing_date: t('landing_date'),
-      last_filed_year: t('last_filed_year'),
-      has_noa: r('has_noa'),
-      has_spouse: r('has_spouse'),
-      has_dependants: r('has_dep'),
-      dep_count: t('dep_count'),
-      dep_ages: t('dep_ages'),
-      has_dtc: r('has_dtc'),
-      t4_count: t('t4_count'),
-      life_change: r('life_change'),
-      life_change_desc: t('life_desc'),
-      slips: [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
+      first_time:        r('first_time'),
+      landing_date:      t('landing_date'),
+      last_filed_year:   t('last_filed_year'),
+      has_noa:           r('has_noa'),
+      has_spouse:        r('has_spouse'),
+      has_dependants:    r('has_dep'),
+      dep_count:         t('dep_count'),
+      dep_ages:          t('dep_ages'),
+      has_dtc:           r('has_dtc'),
+      t4_count:          t('t4_count'),
+      life_change:       r('life_change'),
+      life_change_desc:  t('life_desc'),
+      slips:    [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
       receipts: [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value).join(', ') || 'None',
-      sin_slip: r('sin_slip'),
+      sin_slip:  r('sin_slip'),
       timestamp: new Date().toISOString()
     };
 
     // ⬇⬇⬇ PASTE YOUR APPS SCRIPT WEB APP URL HERE ⬇⬇⬇
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4VG_iZERtvubhKk5T55wC5P7fweAFsYSV8SnlzbDOWR2GsWMHyHuFcSSOAhp48f_q/exec';
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
-    // no-cors is required when calling Apps Script from an external domain
-    // We can't read the response body but if fetch doesn't throw, it worked
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -1041,7 +1081,7 @@
     });
   }
 
-  // Highlight selected options
+  // ── Highlight selected options ───────────────────────────────────
   document.addEventListener('change', function(e) {
     if (e.target.type === 'radio') {
       document.querySelectorAll('input[name="' + e.target.name + '"]').forEach(r => {
