@@ -875,7 +875,7 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-primary" id="submitBtn" onclick="submitScreening()">Complete Registration →</button>
+        <button class="btn btn-primary" id="completeBtn" onclick="completeRegistration()">Complete Registration →</button>
       </div>
     </div>
 
@@ -981,27 +981,27 @@
     btn.textContent = 'Saving…';
     btn.disabled = true;
 
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'saveBio', name, phone, email })
-    })
-    .then(res => {
-      try { return res.json(); } catch(e) { return {}; }
-    })
+    // Use a proxy URL to avoid CORS issues while still reading the response
+    // We append the payload as a URL parameter for saveBio so we can read back
+    // the rowNumber and sheetName using a GET request which supports CORS
+    const saveUrl = APPS_SCRIPT_URL + '?action=saveBio'
+      + '&name='  + encodeURIComponent(name)
+      + '&phone=' + encodeURIComponent(phone)
+      + '&email=' + encodeURIComponent(email);
+
+    fetch(saveUrl)
+    .then(res => res.json())
     .then(data => {
-      // Store row info for later update
       if (data && data.rowNumber) {
         savedRowNumber = data.rowNumber;
         savedSheetName = data.sheetName;
+        console.log('Bio saved — row:', savedRowNumber, 'sheet:', savedSheetName);
       }
       btn.textContent = 'Continue →';
       btn.disabled = false;
       slideTo('s-first-time', 'fwd', 1);
     })
     .catch(() => {
-      // Even if we can't confirm, proceed — data may have saved
       btn.textContent = 'Continue →';
       btn.disabled = false;
       slideTo('s-first-time', 'fwd', 1);
