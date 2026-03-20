@@ -512,9 +512,72 @@
   <div class="slides">
 
     <!-- ══════════════════════════
+         WELCOME
+    ══════════════════════════ -->
+    <!-- ══════════════════════════
+         BIO — COLLECT DETAILS FIRST
+    ══════════════════════════ -->
+       <!-- ══════════════════════════
+         WELCOME
+    ══════════════════════════ -->
+    <div class="slide active" id="s-welcome">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 0 20px;">
+        <div style="width:88px;height:88px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 8px 32px rgba(15,39,68,0.2);font-size:42px;">📋</div>
+        <div style="font-size:26px;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:12px;">Welcome to the<br>Tax Clinic</div>
+        <div style="font-size:14px;color:var(--text-muted);line-height:1.65;max-width:280px;font-weight:500;margin-bottom:32px;">A volunteer will be with you shortly. Please take a moment to complete this quick screening form.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:28px;">
+          <div style="display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;text-align:left;">
+            <div style="width:32px;height:32px;background:var(--navy);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;">1</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--navy);">Enter your details</div><div style="font-size:12px;color:var(--text-muted);font-weight:500;">Name, phone &amp; email</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;text-align:left;">
+            <div style="width:32px;height:32px;background:var(--navy);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;">2</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--navy);">Eligibility screening</div><div style="font-size:12px;color:var(--text-muted);font-weight:500;">A few quick questions</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;text-align:left;">
+            <div style="width:32px;height:32px;background:var(--navy);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;">3</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--navy);">Show result to volunteer</div><div style="font-size:12px;color:var(--text-muted);font-weight:500;">Your volunteer will assist you</div></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:20px;font-size:18px;" onclick="slideTo('s-bio-first', 'fwd', 0)">Get Started →</button>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════
+         BIO — collected first
+    ══════════════════════════ -->
+    <div class="slide" id="s-bio-first">
+      <div class="slide-step">Your Details</div>
+      <div class="slide-title">Let's start with your details</div>
+      <div class="slide-desc">This helps us keep a record of everyone who visits the clinic today.</div>
+      <div class="question">
+        <span class="q-label">Full name</span>
+        <input type="text" id="bio_name" placeholder="As on your government ID">
+        <div class="err" id="err-name">Please enter your full name.</div>
+      </div>
+      <div class="question">
+        <span class="q-label">Phone number</span>
+        <input type="tel" id="bio_phone" placeholder="e.g. 506-555-0123">
+        <div class="err" id="err-phone">Please enter a phone number.</div>
+      </div>
+      <div class="question">
+        <span class="q-label">Email address</span>
+        <input type="email" id="bio_email" placeholder="e.g. yourname@email.com">
+        <div class="err" id="err-email">Please enter a valid email.</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="slideTo('s-welcome', 'back', 0)">←</button>
+        <button class="btn btn-primary" id="bioNextBtn" onclick="saveBioAndContinue()">Continue →</button>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════
          SLIDE 1 — FIRST TIME?
     ══════════════════════════ -->
-    <div class="slide active" id="s-first-time">
+    <div class="slide" id="s-first-time">
       <div class="slide-step">Step 1 of 5 · Filing History</div>
       <div class="slide-title">Are you filing taxes in Canada for the first time?</div>
       <div class="options">
@@ -812,39 +875,12 @@
       </div>
       <div class="spacer"></div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="slideTo('s-bio', 'fwd', 5)">Complete Registration →</button>
+        <button class="btn btn-primary" id="submitBtn" onclick="submitScreening()">Complete Registration →</button>
       </div>
     </div>
 
 
-    <!-- ══════════════════════════
-         SLIDE 5 — BIO
-    ══════════════════════════ -->
-    <div class="slide" id="s-bio">
-      <div class="slide-step">Step 5 of 5 · Your Details</div>
-      <div class="slide-title">Almost done!</div>
-      <div class="bio-intro">✓ You are eligible — please fill in your details below.</div>
-      <div class="question">
-        <span class="q-label">Full name</span>
-        <input type="text" id="bio_name" placeholder="As on your government ID">
-        <div class="err" id="err-name">Please enter your full name.</div>
-      </div>
-      <div class="question">
-        <span class="q-label">Phone number</span>
-        <input type="tel" id="bio_phone" placeholder="e.g. 506-555-0123">
-        <div class="err" id="err-phone">Please enter a phone number.</div>
-      </div>
-      <div class="question">
-        <span class="q-label">Email address</span>
-        <input type="email" id="bio_email" placeholder="e.g. yourname@email.com">
-        <div class="err" id="err-email">Please enter a valid email.</div>
-      </div>
-      <div class="spacer"></div>
-      <div class="btn-row">
-        <button class="btn btn-back" onclick="slideTo('s-summary', 'back', 4)">←</button>
-        <button class="btn btn-primary" id="submitBtn" onclick="submitBio()">Submit ✓</button>
-      </div>
-    </div>
+
 
 
     <!-- ══════════════════════════
@@ -875,14 +911,18 @@
 </div><!-- /app -->
 
 <script>
-  let currentSlide = 's-first-time';
+  let currentSlide = 's-welcome';
   let firstTimeFiler = null;
   let hasDependants = false;
   let lifeChanged = false;
+  let savedRowNumber = null;
+  let savedSheetName = null;
+
+  // ⬇⬇⬇ PASTE YOUR APPS SCRIPT WEB APP URL HERE ⬇⬇⬇
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4VG_iZERtvubhKk5T55wC5P7fweAFsYSV8SnlzbDOWR2GsWMHyHuFcSSOAhp48f_q/exec';
 
   function slideTo(targetId, dir, step) {
     if (targetId === 's-summary') buildSummary();
-
     const current = document.getElementById(currentSlide);
     const target  = document.getElementById(targetId);
     if (!target) return;
@@ -892,7 +932,6 @@
       current.classList.add('exit-left');
       target.classList.remove('exit-left');
       target.style.transform = 'translateX(110%)';
-      // Force reflow
       target.getBoundingClientRect();
       target.classList.add('active');
       target.style.transform = '';
@@ -903,24 +942,123 @@
       target.classList.add('active');
       target.getBoundingClientRect();
       target.style.transform = '';
-      setTimeout(() => { current.style.transform = ''; }, 420);
     }
 
     currentSlide = targetId;
 
-    // Progress bar
     if (step > 0) {
       document.getElementById('progressFill').style.width = ((step / 5) * 100) + '%';
       document.getElementById('progressText').textContent = 'Step ' + step + ' of 5';
-    } else if (step === 0) {
-      document.getElementById('progressFill').style.width = '0%';
-      document.getElementById('progressText').textContent = '';
     } else {
       document.getElementById('progressFill').style.width = '0%';
       document.getElementById('progressText').textContent = '';
     }
-
     window.scrollTo(0, 0);
+  }
+
+  // ── Save bio immediately, then continue to screening ─────────────
+  function saveBioAndContinue() {
+    const name  = document.getElementById('bio_name').value.trim();
+    const phone = document.getElementById('bio_phone').value.trim();
+    const email = document.getElementById('bio_email').value.trim();
+    let valid = true;
+
+    document.getElementById('err-name').classList.toggle('visible', !name);
+    document.getElementById('bio_name').classList.toggle('error', !name);
+    if (!name) valid = false;
+
+    document.getElementById('err-phone').classList.toggle('visible', !phone);
+    document.getElementById('bio_phone').classList.toggle('error', !phone);
+    if (!phone) valid = false;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    document.getElementById('err-email').classList.toggle('visible', !emailOk);
+    document.getElementById('bio_email').classList.toggle('error', !emailOk);
+    if (!emailOk) valid = false;
+    if (!valid) return;
+
+    const btn = document.getElementById('bioNextBtn');
+    btn.textContent = 'Saving…';
+    btn.disabled = true;
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'saveBio', name, phone, email })
+    })
+    .then(res => {
+      try { return res.json(); } catch(e) { return {}; }
+    })
+    .then(data => {
+      // Store row info for later update
+      if (data && data.rowNumber) {
+        savedRowNumber = data.rowNumber;
+        savedSheetName = data.sheetName;
+      }
+      btn.textContent = 'Continue →';
+      btn.disabled = false;
+      slideTo('s-first-time', 'fwd', 1);
+    })
+    .catch(() => {
+      // Even if we can't confirm, proceed — data may have saved
+      btn.textContent = 'Continue →';
+      btn.disabled = false;
+      slideTo('s-first-time', 'fwd', 1);
+    });
+  }
+
+  // ── Called from summary screen — updates row to Eligible ─────────
+  function completeRegistration() {
+    sendUpdate('Eligible');
+    slideTo('s-success', 'fwd', 5);
+  }
+
+  // ── Called when ineligible — updates row to Ineligible ──────────
+  function checkIncome() {
+    const v = document.querySelector('input[name="has_biz"]:checked');
+    if (!v) { alert('Please select an option.'); return; }
+    if (v.value === 'yes') {
+      sendUpdate('Ineligible');
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('progressText').textContent = '';
+      slideTo('s-ineligible', 'fwd', -1);
+    } else {
+      slideTo('s-life', 'fwd', 4);
+    }
+  }
+
+  // ── Sends eligibility + screening data to update the row ────────
+  function sendUpdate(eligibility) {
+    const payload = {
+      action:           'updateRow',
+      rowNumber:        savedRowNumber,
+      sheetName:        savedSheetName,
+      eligibility:      eligibility,
+      first_time:       r('first_time'),
+      landing_date:     t('landing_date'),
+      last_filed_year:  t('last_filed_year'),
+      has_noa:          r('has_noa'),
+      has_spouse:       r('has_spouse'),
+      has_dependants:   r('has_dep'),
+      dep_count:        t('dep_count'),
+      dep_ages:         t('dep_ages'),
+      has_dtc:          r('has_dtc'),
+      t4_count:         t('t4_count'),
+      life_change:      r('life_change'),
+      life_change_desc: t('life_desc'),
+      slips:    [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
+      receipts: [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value).join(', ') || 'None',
+      sin_slip: r('sin_slip'),
+      timestamp: new Date().toISOString()
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
   }
 
   // ── Navigation helpers ──────────────────────────────────────────
@@ -948,18 +1086,6 @@
   function goBackFromDtc() {
     if (hasDependants) slideTo('s-dep-details', 'back', 2);
     else slideTo('s-dep', 'back', 2);
-  }
-
-  function checkIncome() {
-    const v = document.querySelector('input[name="has_biz"]:checked');
-    if (!v) { alert('Please select an option.'); return; }
-    if (v.value === 'yes') {
-      document.getElementById('progressFill').style.width = '0%';
-      document.getElementById('progressText').textContent = '';
-      slideTo('s-ineligible', 'fwd', -1);
-    } else {
-      slideTo('s-life', 'fwd', 4);
-    }
   }
 
   function nextFromLife() {
@@ -1016,70 +1142,14 @@
     document.getElementById('sum-sin-val').textContent = r('sin_slip') !== '—' ? r('sin_slip') : '—';
   }
 
-  // ── Submit bio ───────────────────────────────────────────────────
-  function submitBio() {
-    const name  = document.getElementById('bio_name').value.trim();
-    const phone = document.getElementById('bio_phone').value.trim();
-    const email = document.getElementById('bio_email').value.trim();
-    let valid = true;
-
-    document.getElementById('err-name').classList.toggle('visible', !name);
-    document.getElementById('bio_name').classList.toggle('error', !name);
-    if (!name) valid = false;
-
-    document.getElementById('err-phone').classList.toggle('visible', !phone);
-    document.getElementById('bio_phone').classList.toggle('error', !phone);
-    if (!phone) valid = false;
-
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    document.getElementById('err-email').classList.toggle('visible', !emailOk);
-    document.getElementById('bio_email').classList.toggle('error', !emailOk);
-    if (!emailOk) valid = false;
-    if (!valid) return;
-
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Submitting…';
-    btn.disabled = true;
-
-    const payload = {
-      name, phone, email,
-      first_time:        r('first_time'),
-      landing_date:      t('landing_date'),
-      last_filed_year:   t('last_filed_year'),
-      has_noa:           r('has_noa'),
-      has_spouse:        r('has_spouse'),
-      has_dependants:    r('has_dep'),
-      dep_count:         t('dep_count'),
-      dep_ages:          t('dep_ages'),
-      has_dtc:           r('has_dtc'),
-      t4_count:          t('t4_count'),
-      life_change:       r('life_change'),
-      life_change_desc:  t('life_desc'),
-      slips:    [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
-      receipts: [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value).join(', ') || 'None',
-      sin_slip:  r('sin_slip'),
-      timestamp: new Date().toISOString()
-    };
-
-    // ⬇⬇⬇ PASTE YOUR APPS SCRIPT WEB APP URL HERE ⬇⬇⬇
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4VG_iZERtvubhKk5T55wC5P7fweAFsYSV8SnlzbDOWR2GsWMHyHuFcSSOAhp48f_q/exec';
-
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    })
-    .then(() => {
-      document.getElementById('ref-number').textContent = 'Ref: TC-' + Date.now().toString().slice(-5);
-      slideTo('s-success', 'fwd', 5);
-    })
-    .catch(() => {
-      btn.textContent = 'Submit ✓';
-      btn.disabled = false;
-      alert('Could not connect. Please inform your volunteer to record your details manually.');
-    });
-  }
+  // ── Always start from welcome on load/refresh ──────────────────
+  window.addEventListener('load', function() {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-welcome').classList.add('active');
+    currentSlide = 's-welcome';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressText').textContent = '';
+  });
 
   // ── Highlight selected options ───────────────────────────────────
   document.addEventListener('change', function(e) {
@@ -1094,4 +1164,3 @@
   });
 </script>
 </body>
-</html>
