@@ -1030,7 +1030,17 @@
 
   // ── Sends eligibility + screening data to update the row ────────
   function sendUpdate(eligibility) {
-    const payload = {
+    // Log so we can confirm row info was saved from saveBio
+    console.log('sendUpdate called — eligibility:', eligibility,
+      'rowNumber:', savedRowNumber, 'sheetName:', savedSheetName);
+
+    if (!savedRowNumber || !savedSheetName) {
+      console.warn('Row info missing — cannot update eligibility');
+      return;
+    }
+
+    // Build params for GET request (avoids no-cors POST response issue)
+    const params = new URLSearchParams({
       action:           'updateRow',
       rowNumber:        savedRowNumber,
       sheetName:        savedSheetName,
@@ -1049,16 +1059,17 @@
       life_change_desc: t('life_desc'),
       slips:    [...document.querySelectorAll('input[name="slips"]:checked')].map(e => e.value).join(', ') || 'None',
       receipts: [...document.querySelectorAll('input[name="receipts"]:checked')].map(e => e.value).join(', ') || 'None',
-      sin_slip: r('sin_slip'),
-      timestamp: new Date().toISOString()
-    };
+      sin_slip: r('sin_slip')
+    });
 
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
+    fetch(APPS_SCRIPT_URL + '?' + params.toString())
+    .then(res => res.json())
+    .then(data => {
+      console.log('updateRow response:', data);
+    })
+    .catch(err => {
+      console.error('updateRow failed:', err);
+    });
   }
 
   // ── Navigation helpers ──────────────────────────────────────────
